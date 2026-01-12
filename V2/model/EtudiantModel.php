@@ -7,41 +7,57 @@
 ); -->
 <?php
 
-function addEtudiant($nom, $prenom, $email, $filiere)
+class EtudiantModel
 {
-    global $connexion;
-    $sql = "INSERT INTO etudiant (nom, prenom, email, filiere)
-        VALUES ('$nom','$prenom','$email','$filiere')";
-    pg_query($connexion, $sql);
-}
+    private $database;
 
-function deleteEtudiant($id)
-{
-    global $connexion;
-    $sql = "DELETE FROM etudiant WHERE id = $id";
-    pg_query($connexion, $sql);
-}
+    function  __construct($database)
+    {
+        $this->database = $database;
+    }
 
-function updateEtudiant($id, $nom, $prenom, $email, $filiere)
-{
-    global $connexion;
-    $sql = "UPDATE etudiant SET nom='$nom', prenom='$prenom', email='$email', filiere='$filiere' WHERE id=$id";
-    pg_query($connexion, $sql);
-}
-function getAllEtudiant()
-{
-    global $connexion;
-    $sql = "SELECT * FROM etudiant";
-    $result = pg_query($connexion, $sql);
-    return pg_fetch_all($result);
-}
-function getEtudiantById($id)
-{
-    global $connexion;
-    $sql = "SELECT * FROM etudiant WHERE id=$id";
-    $result = pg_query($connexion, $sql);
-    return pg_fetch_all($result)[0];
-}
+    function addEtudiant($nom, $prenom, $email, $filiere)
+    {
+        global $connexion;
+        $sql = "INSERT INTO etudiant (nom, prenom, email, filiere)
+        VALUES (?,?,?,?)";
+        $result = $this->database->prepare($sql);
+        $result->execute([$nom, $prenom, $email, $filiere]);
+    }
 
+    function deleteEtudiant($id)
+    {
+        global $connexion;
+        $sql = "DELETE FROM etudiant where id = :id";
+        $result = $this->database->prepare($sql);
+        $result->execute(['id' => $id]);
+    }
+
+    function updateEtudiant($id, $nom, $prenom, $email, $filiere)
+    {
+        global $connexion;
+        $sql = "UPDATE etudiant SET nom = ?, prenom = ?, email = ?, filiere = ? WHERE id = ?";
+        $result = $this->database->prepare($sql);
+        $result->execute([$nom, $prenom, $email, $filiere, $id]);
+    }
+    
+    function getAllEtudiant()
+    {
+        global $connexion;
+        $sql = "SELECT * FROM etudiant";
+        $result = $this->database->prepare($sql);
+        $result->execute();
+        return $result->fetchAll();
+    }
+
+    function getEtudiantById($id)
+    {
+        global $connexion;
+        $sql = "SELECT * FROM etudiant where id = ?";
+        $result = $this->database->prepare($sql);
+        $result->execute([$id]);
+        return $result->fetch();
+    }
+}
 
 ?>

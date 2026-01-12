@@ -1,4 +1,3 @@
-
 <!-- CREATE TABLE public.etudiant (
     id integer NOT NULL,
     nom character varying(50),
@@ -8,40 +7,50 @@
 ); -->
 <?php
 
-
-function listEtudiant()
+class EtudiantController
 {
-    $etudiant = getAllEtudiant(); //model
-    require_once './view/etudiant/list.php'; // view
-}
+    private $model;
 
-function addFormEtudiant()
-{
-    require_once './view/etudiant/add.php'; // view
-}
+    function __construct($model)
+    {
+        $this->model = $model;
+    }
 
-function saveFormEtudiant($nom, $prenom, $email, $filiere)
-{
-    addEtudiant($nom, $prenom, $email, $filiere); // model
-    header('location:index.php');
-}
 
-function deleteOneEtudiant($id)
-{
-    deleteEtudiant($id); //model
-    header('location:index.php');
-}
+    function listEtudiant()
+    {
+        $etudiant = $this->model->getAllEtudiant(); 
+        require_once './view/etudiant/list.php';
+    }
 
-function editEtudiant($id)
-{
-    $etudiant =  getEtudiantById($id); //model
-    require_once './view/etudiant/edit.php'; // view
-}
+    function addFormEtudiant()
+    {
+        require_once './view/etudiant/add.php';
+    }
 
-function updateOneEtudiant($id, $nom, $prenom, $email, $filiere)
-{
-    updateEtudiant($id, $nom, $prenom, $email, $filiere); //model
-    header('location:index.php');
+    function saveFormEtudiant($nom, $prenom, $email, $filiere)
+    {
+        $this->model->addEtudiant($nom, $prenom, $email, $filiere);
+        header('location:index.php');
+    }
+
+    function deleteOneEtudiant($id)
+    {
+        $this->model->deleteEtudiant($id); 
+        header('location:index.php');
+    }
+
+    function editEtudiant($id)
+    {
+        $etudiant =  $this->model->getEtudiantById($id); 
+        require_once './view/etudiant/edit.php';
+    }
+
+    function updateOneEtudiant($id, $nom, $prenom, $email, $filiere)
+    {
+        $this->model->updateEtudiant($id, $nom, $prenom, $email, $filiere); 
+        header('location:index.php');
+    }
 }
 
 ?>

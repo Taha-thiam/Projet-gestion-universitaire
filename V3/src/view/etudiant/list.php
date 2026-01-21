@@ -26,7 +26,7 @@
                 <table class="table table-hover table-bordered">
                     <thead class="table-dark">
                         <tr>
-                            <th>Id</th>
+                            <th>N°</th>
                             <th>Nom</th>
                             <th>Prénom</th>
                             <th>Email</th>
@@ -35,9 +35,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($etudiants  as $a) { ?>
+                        <?php foreach ($etudiants as $key => $a) { ?>
                             <tr>
-                                <td><?= $a->getId() ?></td>
+                                <td><?= $key + 1; ?></td>
                                 <td><?php echo $a->getNom() ?></td>
                                 <td><?php echo $a->getPrenom() ?></td>
                                 <td><?php echo $a->getEmail() ?></td>

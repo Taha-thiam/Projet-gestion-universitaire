@@ -58,7 +58,7 @@
                 <table class="table table-hover table-bordered">
                     <thead class="table-dark">
                         <tr>
-                            <th>Id</th>
+                            <th>N°</th>
                             <th>Nom</th>
                             <th>Prénom</th>
                             <th>Email</th>
@@ -67,9 +67,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach($etudiant as $e) { ?>
+                        <?php foreach($etudiant as $key => $e) { ?>
                             <tr>
-                                <td><?= $e['id'] ?></td>
+                                <td><?= $key +1 ?></td>
                                 <td><?= $e['nom'] ?></td>
                                 <td><?= $e['prenom'] ?></td>
                                 <td><?= $e['email'] ?></td>
